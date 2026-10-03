@@ -594,6 +594,64 @@ body::before {
     #userEmail {
         display: none;
     }
+   
+}
+   .action-button {
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+
+    /* tactile surface */
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0, 255, 255, 0.10),
+            rgba(0, 20, 30, 0.55)
+        );
+
+    border: 1px solid rgba(0, 255, 255, 0.35);
+    border-radius: 10px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        0 5px 0 rgba(0, 100, 110, 0.25),
+        0 10px 25px rgba(0,0,0,0.35);
+
+    transition:
+        transform 0.08s ease,
+        box-shadow 0.08s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+/* hover = hand touches the control */
+.action-button:hover {
+    border-color: #00ffff;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.09),
+        0 5px 0 rgba(0, 150, 160, 0.35),
+        0 0 25px rgba(0,255,255,0.16);
+
+    transform: translateY(-2px);
+}
+
+/* actual physical press */
+.action-button:active {
+    transform: translateY(3px);
+
+    box-shadow:
+        inset 0 2px 6px rgba(0,0,0,0.45),
+        0 1px 0 rgba(0, 100, 110, 0.3),
+        0 0 15px rgba(0,255,255,0.2);
+}
+
+/* keyboard accessibility */
+.action-button:focus-visible {
+    outline: 2px solid #00ffff;
+    outline-offset: 3px;
 }
 </style>
 </head>
@@ -721,53 +779,35 @@ body::before {
 
         <!-- ACTION CARDS -->
 
-        <section class="actions">
+        <button class="card action-button" onclick="location.href='new-game.html'">
+    <div class="card-icon">＋</div>
 
-            <div class="card">
+    <h3>Make a New Game</h3>
 
-                <div class="card-icon">＋</div>
+    <p>Start building your next game project.</p>
 
-                <h3>Make a New Game</h3>
+    <div class="card-arrow">→</div>
+</button>
 
-                <p>
-                    Start building your next game project.
-                </p>
+            <button class="card action-button" onclick="location.href='gallery.html'">
+    <div class="card-icon">▧</div>
 
-                <div class="card-arrow">→</div>
+    <h3>Explore Gallery</h3>
 
-            </div>
+    <p>Browse games and creations from the community.</p>
 
+    <div class="card-arrow">→</div>
+</button>
 
-            <div class="card">
+<button class="card action-button" onclick="location.href='request-game.html'">
+    <div class="card-icon">⚡</div>
 
-                <div class="card-icon">▧</div>
+    <h3>Request a Game</h3>
 
-                <h3>Explore Gallery</h3>
+    <p>Submit an idea and let us build it.</p>
 
-                <p>
-                    Browse games and creations from the community.
-                </p>
-
-                <div class="card-arrow">→</div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">⚡</div>
-
-                <h3>Request a Game</h3>
-
-                <p>
-                    Submit an idea and let us build it.
-                </p>
-
-                <div class="card-arrow">→</div>
-
-            </div>
-
-        </section>
+    <div class="card-arrow">→</div>
+</button>
 
 
         <!-- BOTTOM -->
