@@ -1,272 +1,1008 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Southeast Studios| Dashboard</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Southeast Studios | BotForge Dashboard</title>
+
 <style>
-    .dashboard {
-  display: flex;
-  height: 100vh;
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
 body {
-  background: radial-gradient(circle at top right, #001f2f, #000);
-}
-    .card {
-  background: rgba(0,255,255,0.05);
-  border: 1px solid rgba(0,255,255,0.4);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(0,255,255,0.2);
-  transition: 0.3s;
-  position: relative;
-  overflow: hidden;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #e8ffff;
+    background:
+        radial-gradient(circle at 80% 0%, rgba(0,255,255,0.12), transparent 35%),
+        radial-gradient(circle at 20% 100%, rgba(0,120,255,0.08), transparent 35%),
+        #02070b;
 }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 0 40px rgba(0,255,255,0.5);
+/* subtle scanline effect */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.015) 0px,
+        rgba(255,255,255,0.015) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    z-index: 999;
 }
-/* Sidebar */
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar {
-  width: 220px;
-  background: #0a0a14;
-  padding: 20px;
-  border-right: 2px solid #00ffff;
+    width: 245px;
+    min-height: 100vh;
+    padding: 28px 18px;
+
+    background: rgba(5, 10, 18, 0.96);
+    border-right: 1px solid rgba(0,255,255,0.55);
+
+    box-shadow:
+        8px 0 35px rgba(0,255,255,0.05);
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 
-.sidebar h2 {
-  color: #00ffff;
+.brand {
+    padding: 5px 12px 30px;
 }
+
+.brand h2 {
+    color: #00ffff;
+    font-size: 25px;
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 10px rgba(0,255,255,0.7),
+        0 0 25px rgba(0,255,255,0.25);
+}
+
+.brand span {
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    color: #6d8f95;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* navigation */
 
 .sidebar ul {
-  list-style: none;
-  padding: 0;
+    list-style: none;
 }
 
 .sidebar li {
-  padding: 10px;
-  color: #ccc;
-  cursor: pointer;
+    margin: 5px 0;
 }
 
-.sidebar li:hover {
-  color: #00ffff;
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    color: #9fb4b8;
+    text-decoration: none;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    transition: 0.25s ease;
 }
 
-/* Main */
+.sidebar a:hover {
+    color: #00ffff;
+    background: rgba(0,255,255,0.05);
+    border-color: rgba(0,255,255,0.18);
+    transform: translateX(4px);
+}
+
+.sidebar a.active {
+    color: #00ffff;
+
+    background: linear-gradient(
+        90deg,
+        rgba(0,255,255,0.13),
+        rgba(0,255,255,0.025)
+    );
+
+    border-color: rgba(0,255,255,0.35);
+
+    box-shadow:
+        inset 3px 0 #00ffff,
+        0 0 18px rgba(0,255,255,0.07);
+}
+
+.nav-icon {
+    width: 22px;
+    text-align: center;
+}
+
+/* sidebar footer */
+
+.sidebar-footer {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 22px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(0,255,255,0.12);
+
+    color: #536b70;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================
+   MAIN
+========================= */
+
 .main {
-  flex: 1;
-  padding: 30px;
+    margin-left: 245px;
+    width: calc(100% - 245px);
+    padding: 28px 38px 30px;
 }
 
-/* Topbar */
+/* =========================
+   TOPBAR
+========================= */
+
 .topbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+    height: 55px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid rgba(0,255,255,0.12);
+
+    margin-bottom: 38px;
 }
 
-/* Actions */
+.topbar-left {
+    color: #71888d;
+    font-size: 14px;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1px solid #00ffff;
+    color: #00ffff;
+
+    background: rgba(0,255,255,0.07);
+
+    box-shadow: 0 0 12px rgba(0,255,255,0.15);
+}
+
+#userEmail {
+    color: #a9c0c4;
+    font-size: 13px;
+}
+
+/* =========================
+   WELCOME
+========================= */
+
+.welcome {
+    margin-bottom: 28px;
+}
+
+.welcome h1 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+
+    background: linear-gradient(
+        90deg,
+        #00ffff,
+        #5de8ff,
+        #c36cff
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: 0 0 20px rgba(0,255,255,0.2);
+}
+
+.welcome p {
+    margin-top: 8px;
+    color: #72898e;
+    font-size: 15px;
+}
+
+/* =========================
+   ACTION CARDS
+========================= */
+
 .actions {
-  display: flex;
-  gap: 20px;
-  margin: 20px 0;
-}
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 
-.card::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00ffff, transparent);
-  top: 0;
-  left: -100%;
-  transition: 0.5s;
-}
-.sidebar li {
-  transition: 0.3s;
-  position: relative;
-}
-
-.sidebar li:hover {
-  color: #00ffff;
-  transform: translateX(5px);
-}
-
-.sidebar li::before {
-  content: "";
-  position: absolute;
-  left: -10px;
-  width: 4px;
-  height: 0%;
-  background: #00ffff;
-  transition: 0.3s;
-}
-
-.sidebar li:hover::before {
-  height: 100%;
-}
-.card:hover::before {
-  left: 100%;
-}
-
-.card:hover {
-  background: #00ffff;
-  color: black;
-}
-
-/* Bottom */
-.bottom {
-  display: flex;
-  gap: 20px;
-}
-
-.activity, .progress {
-  flex: 1;
-  border: 2px solid #00ffff;
-  padding: 20px;
-}
-
-/* Progress circle */
-.circle {
-  width: 100px;
-  height: 100px;
-  border: 5px solid #00ffff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-}
-    .progress-ring {
-  position: relative;
-  width: 120px;
-  margin: auto;
-}
-
-.progress-ring span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #00ffff;
-}
-    h1 {
-  background: linear-gradient(90deg, #00ffff, #ff00ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(0,255,255,0.4);
-}
-    @keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+    margin-bottom: 30px;
 }
 
 .card {
-  animation: float 4s ease-in-out infinite;
+    min-height: 145px;
+
+    padding: 22px;
+
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid rgba(0,255,255,0.22);
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,255,255,0.07),
+            rgba(0,20,30,0.35)
+        );
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.25);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    border-color: rgba(0,255,255,0.7);
+
+    box-shadow:
+        0 12px 35px rgba(0,255,255,0.12);
+}
+
+.card-icon {
+    font-size: 25px;
+    color: #00ffff;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 17px;
+    color: #e9ffff;
+    margin-bottom: 7px;
+}
+
+.card p {
+    color: #6f888d;
+    font-size: 12px;
+}
+
+.card-arrow {
+    position: absolute;
+    right: 20px;
+    bottom: 18px;
+
+    color: #00ffff;
+    font-size: 18px;
+}
+
+/* top scanning line */
+
+.card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: -100%;
+
+    width: 100%;
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00ffff,
+        transparent
+    );
+
+    transition: 0.6s;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+/* =========================
+   BOTTOM GRID
+========================= */
+
+.bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: 20px;
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.panel {
+    border: 1px solid rgba(0,255,255,0.22);
+    border-radius: 10px;
+
+    background: rgba(0,255,255,0.025);
+
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 17px 20px;
+
+    border-bottom: 1px solid rgba(0,255,255,0.12);
+}
+
+.panel-header h3 {
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #dffeff;
+}
+
+.panel-header span {
+    font-size: 11px;
+    color: #00ffff;
+}
+
+/* =========================
+   ACTIVITY
+========================= */
+
+.activity-list {
+    list-style: none;
+}
+
+.activity-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 20px;
+
+    border-bottom: 1px solid rgba(255,255,255,0.045);
+}
+
+.activity-list li:last-child {
+    border-bottom: none;
+}
+
+.activity-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.activity-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #00ffff;
+
+    box-shadow:
+        0 0 8px rgba(0,255,255,0.8);
+}
+
+.activity-name {
+    color: #c5d8db;
+    font-size: 13px;
+}
+
+.activity-time {
+    color: #566e73;
+    font-size: 11px;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-panel {
+    padding-bottom: 22px;
+}
+
+.progress-content {
+    padding: 24px 20px;
+    text-align: center;
+}
+
+.progress-ring {
+    width: 150px;
+    height: 150px;
+
+    position: relative;
+
+    margin: 5px auto 20px;
+}
+
+.progress-ring svg {
+    width: 150px;
+    height: 150px;
+
+    transform: rotate(-90deg);
+}
+
+.progress-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.07);
+    stroke-width: 9;
+}
+
+.progress-value {
+    fill: none;
+    stroke: #00ffff;
+    stroke-width: 9;
+
+    stroke-linecap: round;
+
+    stroke-dasharray: 440;
+    stroke-dashoffset: 88;
+
+    filter: drop-shadow(0 0 5px rgba(0,255,255,0.7));
+}
+
+.progress-number {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: #00ffff;
+
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.progress-content h4 {
+    color: #d9ffff;
+    margin-bottom: 6px;
+}
+
+.progress-content p {
+    color: #60787d;
+    font-size: 12px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    margin-top: 35px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(0,255,255,0.1);
+
+    text-align: center;
+
+    color: #40565b;
+    font-size: 11px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+        width: calc(100% - 190px);
+        padding: 25px;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .dashboard {
+        display: block;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .topbar {
+        margin-bottom: 25px;
+    }
+
+    #userEmail {
+        display: none;
+    }
 }
 </style>
+</head>
+
 <body>
-    <div class="dashboard">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2>BotForge</h2>
-    <ul>
-      <li>Dashboard</li>
-      <li>Projects</li>
-      <li>Gallery</li>
-      <li>Tutorials</li>
-      <li>Game Templates</li>
-      <li>AI Map</li>
-      <li>BotForge</li>
-      <li>Contact Us</li>
-    </ul>
-  </aside>
+<div class="dashboard">
 
-  <!-- Main -->
-  <main class="main">
+    <!-- ================= SIDEBAR ================= -->
 
-    <!-- Top bar -->
-    <div class="topbar">
-      <h3>Welcome 👋</h3>
-      <div id="userEmail">user@email.com</div>
-    </div>
+    <aside class="sidebar">
 
-    <!-- Greeting -->
-    <section class="welcome">
-      <h1>Hello User</h1>
-      <p>What do you want to do today?</p>
-    </section>
+        <div class="brand">
+            <h2>BotForge</h2>
+            <span>Southeast Studios</span>
+        </div>
 
-    <!-- Action cards -->
-    <section class="actions">
-      <div class="card">Make a New Game</div>
-      <div class="card">Explore Gallery</div>
-      <div class="card">Request a Game</div>
-    </section>
-
-    <!-- Bottom section -->
-    <section class="bottom">
-      
-      <div class="activity">
-        <h3>Recent Activity</h3>
         <ul>
-          <li>Project created</li>
-          <li>Game updated</li>
-          <li>Gallery viewed</li>
+
+            <li>
+                <a href="#" class="active">
+                    <span class="nav-icon">⌂</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">▣</span>
+                    Projects
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">▧</span>
+                    Gallery
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">?</span>
+                    Tutorials
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">◆</span>
+                    Game Templates
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">⌁</span>
+                    AI Map
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">◈</span>
+                    BotForge
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="nav-icon">✉</span>
+                    Contact Us
+                </a>
+            </li>
+
         </ul>
-      </div>
 
-      <div class="progress-ring">
-  <svg width="120" height="120">
-    <circle cx="60" cy="60" r="50" stroke="#222" stroke-width="8" fill="none"/>
-    <circle cx="60" cy="60" r="50" stroke="#00ffff" stroke-width="8"
-      fill="none"
-      stroke-dasharray="314"
-      stroke-dashoffset="62"/>
-  </svg>
-  <span>80%</span>
+        <div class="sidebar-footer">
+            BotForge Workspace<br>
+            Southeast Studios © 2026
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="topbar-left">
+                BotForge / Dashboard
+            </div>
+
+            <div class="user-area">
+
+                <div class="user-avatar">
+                    ◉
+                </div>
+
+                <div id="userEmail">
+                    user@email.com
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WELCOME -->
+
+        <section class="welcome">
+
+            <h1>Hello User</h1>
+
+            <p>
+                What do you want to create today?
+            </p>
+
+        </section>
+
+
+        <!-- ACTION CARDS -->
+
+        <section class="actions">
+
+            <div class="card">
+
+                <div class="card-icon">＋</div>
+
+                <h3>Make a New Game</h3>
+
+                <p>
+                    Start building your next game project.
+                </p>
+
+                <div class="card-arrow">→</div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">▧</div>
+
+                <h3>Explore Gallery</h3>
+
+                <p>
+                    Browse games and creations from the community.
+                </p>
+
+                <div class="card-arrow">→</div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">⚡</div>
+
+                <h3>Request a Game</h3>
+
+                <p>
+                    Submit an idea and let us build it.
+                </p>
+
+                <div class="card-arrow">→</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BOTTOM -->
+
+        <section class="bottom">
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>Recent Activity</h3>
+
+                    <span>VIEW ALL →</span>
+
+                </div>
+
+                <ul class="activity-list">
+
+                    <li>
+
+                        <div class="activity-info">
+
+                            <span class="activity-dot"></span>
+
+                            <span class="activity-name">
+                                Project created
+                            </span>
+
+                        </div>
+
+                        <span class="activity-time">
+                            2 hours ago
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <div class="activity-info">
+
+                            <span class="activity-dot"></span>
+
+                            <span class="activity-name">
+                                Game updated
+                            </span>
+
+                        </div>
+
+                        <span class="activity-time">
+                            Yesterday
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <div class="activity-info">
+
+                            <span class="activity-dot"></span>
+
+                            <span class="activity-name">
+                                Gallery viewed
+                            </span>
+
+                        </div>
+
+                        <span class="activity-time">
+                            2 days ago
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <div class="activity-info">
+
+                            <span class="activity-dot"></span>
+
+                            <span class="activity-name">
+                                Workspace opened
+                            </span>
+
+                        </div>
+
+                        <span class="activity-time">
+                            3 days ago
+                        </span>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- PROJECT STATUS -->
+
+            <div class="panel progress-panel">
+
+                <div class="panel-header">
+
+                    <h3>Project Status</h3>
+
+                    <span>ACTIVE</span>
+
+                </div>
+
+                <div class="progress-content">
+
+                    <div class="progress-ring">
+
+                        <svg viewBox="0 0 160 160">
+
+                            <circle
+                                class="progress-bg"
+                                cx="80"
+                                cy="80"
+                                r="70">
+                            </circle>
+
+                            <circle
+                                class="progress-value"
+                                cx="80"
+                                cy="80"
+                                r="70">
+                            </circle>
+
+                        </svg>
+
+                        <div class="progress-number">
+                            80%
+                        </div>
+
+                    </div>
+
+                    <h4>Workspace Progress</h4>
+
+                    <p>
+                        4 of 5 milestones completed
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="footer">
+            © 2026 Southeast Studios · BotForge
+        </footer>
+
+    </main>
+
 </div>
 
-    </section>
 
-  </main>
+<!-- ================= FIREBASE ================= -->
 
-</div>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHLyiX6AvIjEr-hkaBGKg_kEf78Xskd48",
-  authDomain: "southeast-studios.firebaseapp.com",
-  projectId: "southeast-studios",
-  storageBucket: "southeast-studios.firebasestorage.app",
-  messagingSenderId: "977801049293",
-  appId: "1:977801049293:web:911d9d0986a025d113e584"
+
+    apiKey: "AIzaSyAHLyiX6AvIjEr-hkaBGKg_kEf78Xskd48",
+
+    authDomain:
+        "southeast-studios.firebaseapp.com",
+
+    projectId:
+        "southeast-studios",
+
+    storageBucket:
+        "southeast-studios.firebasestorage.app",
+
+    messagingSenderId:
+        "977801049293",
+
+    appId:
+        "1:977801049293:web:911d9d0986a025d113e584"
+
 };
+
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 
-const userEmail = document.getElementById("userEmail");
+const userEmail =
+    document.getElementById("userEmail");
 
-// WAIT for Firebase
+
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userEmail.innerText = user.email;
-  } else {
-    console.log("No user found");
-    window.location.href = "login.html";
-  }
+
+    if (user) {
+
+        userEmail.innerText =
+            user.email;
+
+    } else {
+
+        console.log("No user found");
+
+        window.location.href =
+            "login.html";
+    }
+
 });
 
+
 window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "index.html";
+
+    await signOut(auth);
+
+    window.location.href =
+        "index.html";
+
 };
+
 </script>
+
 </body>
 </html>
