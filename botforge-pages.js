@@ -1,8 +1,154 @@
-const KEY='botforge.projects.v1', ACT='botforge.activity.v1';const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'[]')}catch{return[]}},write=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),log=(label,detail='')=>{const a=read(ACT);a.unshift({label,detail,time:new Date().toISOString()});write(ACT,a.slice(0,60))},esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const form=document.querySelector('#newGameForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const p={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name:document.querySelector('#gameName').value.trim(),genre:document.querySelector('#genre').value,pitch:document.querySelector('#gamePitch').value.trim(),updated:new Date().toISOString()};const projects=read(KEY);projects.unshift(p);write(KEY,projects);log('Project created',p.name);location.href='botforge.html?project='+encodeURIComponent(p.id)});
-const data=[{name:'Starfall Sprint',genre:'Arcade',desc:'Dash through shifting rooftops and collect fragments.',icon:'✦'},{name:'Pocket Planet',genre:'Puzzle',desc:'Rebuild tiny worlds by connecting their ecosystems.',icon:'◎'},{name:'Lantern Vale',genre:'Adventure',desc:'Explore a quiet valley guided by a little light.',icon:'⌁'},{name:'Neon Drift',genre:'Racing',desc:'Master sharp turns on a glowing midnight circuit.',icon:'↗'},{name:'Clockwork Garden',genre:'Puzzle',desc:'Route gears and water to wake a mechanical garden.',icon:'⚙'}];const gg=document.querySelector('#galleryGrid');function drawGallery(){if(!gg)return;const q=(document.querySelector('#gallerySearch').value||'').toLowerCase(),g=document.querySelector('#galleryGenre').value;const rows=data.filter(x=>(!g||x.genre===g)&&`${x.name} ${x.genre} ${x.desc}`.toLowerCase().includes(q));gg.innerHTML=rows.map(x=>`<a class="tile" href="botforge.html"><span class="icon">${x.icon}</span><span class="tag">${x.genre}</span><h2>${x.name}</h2><p>${x.desc}</p></a>`).join('')||'<div class="empty">No games match that search yet.</div>'}if(gg){drawGallery();document.querySelector('#gallerySearch').addEventListener('input',drawGallery);document.querySelector('#galleryGenre').addEventListener('change',drawGallery)}
-const lessons=[['01','Shape a game loop','Turn the player’s main action into a repeatable 30-second loop.','8 min'],['02','Build a first level','Use one clear goal, one obstacle, and one reward.','12 min'],['03','Make controls feel right','Tune response, feedback, and readable states.','10 min'],['04','Test with a player','Observe where players hesitate, then change one thing.','15 min']];const tg=document.querySelector('#tutorialGrid');function drawLessons(){if(!tg)return;const q=document.querySelector('#tutorialSearch').value.toLowerCase();const d=lessons.filter(x=>x.join(' ').toLowerCase().includes(q));tg.innerHTML=d.map(x=>`<article class="tile"><span class="eyebrow">LESSON ${x[0]} · ${x[3]}</span><h2>${x[1]}</h2><p>${x[2]}</p><a class="action secondary" style="margin-top:auto;align-self:flex-start" href="botforge.html">Open workspace →</a></article>`).join('')||'<div class="empty">No lessons found.</div>'}if(tg){drawLessons();document.querySelector('#tutorialSearch').addEventListener('input',drawLessons)}
-const templates=[['Arcade score chase','A compact loop with movement, hazards, and a high score.','Arcade'],['Story platformer','A side-scrolling journey with checkpoints and collectibles.','Platformer'],['Puzzle rooms','A series of small rooms, each built around one mechanic.','Puzzle'],['Top-down adventure','Explore a map, meet characters, and complete objectives.','Adventure'],['Time-trial racer','Race a short course and beat a personal best.','Racing'],['Clicker prototype','Test progression and upgrades with a simple core loop.','Arcade']];const tpl=document.querySelector('#templateGrid');if(tpl)tpl.innerHTML=templates.map(x=>`<article class="tile"><span class="tag">${x[2]}</span><h2>${x[0]}</h2><p>${x[1]}</p><a class="action secondary" style="margin-top:auto;align-self:flex-start" href="new-game.html">Use template →</a></article>`).join('');
-const mf=document.querySelector('#mapForm');if(mf)mf.addEventListener('submit',e=>{e.preventDefault();const idea=document.querySelector('#mapIdea').value.trim(),genre=document.querySelector('#mapGenre').value,mood=document.querySelector('#mapMood').value;const box=document.querySelector('#mapResult');box.hidden=false;box.innerHTML=`<h2>Game map · ${esc(genre)}</h2><p><b>Concept:</b> ${esc(idea)}</p><div class="grid" style="margin-top:18px"><article><h3>Player goal</h3><p>Give the player one clear objective tied to the idea.</p></article><article><h3>Core loop</h3><p>Explore → act → get feedback → unlock a small reward.</p></article><article><h3>First playable</h3><p>Build one short scene that tests the main action and ${esc(mood.toLowerCase())} tone.</p></article></div><div style="margin-top:20px"><a class="action" href="new-game.html">Turn this into a project →</a></div>`;log('Game map drafted',genre)});
-function renderWorkspace(){const list=document.querySelector('#workspaceProjects');if(!list)return;const p=read(KEY);list.innerHTML=p.length?p.map(x=>`<p style="margin:0 0 12px"><a style="color:#7efcff" href="botforge.html?project=${encodeURIComponent(x.id)}">${esc(x.name)}</a> <span class="muted">· ${esc(x.genre)}</span></p>`).join(''):'<p class="muted">No local projects yet. Start with a new project.</p>'}renderWorkspace();const title=document.querySelector('#buildTitle'),notes=document.querySelector('#buildNotes'),save=document.querySelector('#saveBuild');if(title&&notes){const id=new URLSearchParams(location.search).get('project'),p=read(KEY).find(x=>x.id===id);if(p){title.value=p.name;notes.value=p.pitch||'';document.querySelector('#editorTitle').textContent=p.name}const saved=JSON.parse(localStorage.getItem('botforge.build.v1')||'{}');if(!p){title.value=saved.title||'';notes.value=saved.notes||''}save.addEventListener('click',()=>{localStorage.setItem('botforge.build.v1',JSON.stringify({title:title.value,notes:notes.value,updated:new Date().toISOString()}));document.querySelector('#editorTitle').textContent=title.value||'Untitled build';document.querySelector('#saveState').textContent='Saved just now in this browser.';log('Workspace saved',title.value||'Untitled build')})}
-const projectPage=document.querySelector('#projectLibrary');if(projectPage){const projects=read(KEY);projectPage.innerHTML=projects.length?projects.map(x=>`<article class="panel"><div class="row" style="justify-content:space-between"><div><h2>${esc(x.name)}</h2><p>${esc(x.genre)} · ${esc(x.pitch||'No description yet.')}</p></div><a class="action secondary" href="botforge.html?project=${encodeURIComponent(x.id)}">Open build →</a></div></article>`).join(''):'<div class="empty">No projects yet. Create a project to get started.</div>'}const al=document.querySelector('#activityList');function drawActivity(){if(!al)return;const entries=read(ACT);al.innerHTML=entries.length?entries.map(x=>`<article class="panel"><h3>${esc(x.label)}</h3><p>${esc(x.detail)} <span class="muted">· ${new Date(x.time).toLocaleString()}</span></p></article>`).join(''):'<div class="empty">No activity has been recorded on this device yet.</div>'}drawActivity();document.querySelector('#clearActivity')?.addEventListener('click',()=>{write(ACT,[]);drawActivity()});
+// BotForge project launcher and storage utilities
+const KEY='botforge.projects.v1', ACT='botforge.activity.v1';
+
+const read = k => { try { return JSON.parse(localStorage.getItem(k) || '[]') } catch { return [] } }
+const write = (k,v) => localStorage.setItem(k, JSON.stringify(v))
+
+// Ensure some sample templates exist
+const templates = [
+  {
+    id: 'tpl-platformer',
+    name: 'Platformer',
+    desc: 'Simple platformer with player, platforms and coins',
+    seed: {
+      version:1,
+      name:'Platformer Template',
+      settings:{},
+      scenes:[{id:'scene-1',name:'Level 1',objects:['player-1','platform-1','coin-1']}],
+      objects:[
+        {id:'player-1',name:'Player',type:'Player',x:80,y:200,width:48,height:48,rotation:0,visible:true,opacity:1,layer:1,vars:{health:100},behaviors:['Platformer Character','Gravity','Collision']},
+        {id:'platform-1',name:'Ground',type:'Platform',x:0,y:300,width:640,height:40,rotation:0,visible:true,opacity:1,layer:0,vars:{},behaviors:[]},
+        {id:'coin-1',name:'Coin',type:'Coin',x:260,y:250,width:24,height:24,rotation:0,visible:true,opacity:1,layer:1,vars:{value:10},behaviors:[]}
+      ],
+      assets:[],
+      events:[
+        {id:crypto.randomUUID?crypto.randomUUID():"e1",sceneId:'scene-1',when:{type:'collision',a:'Player',b:'Coin'},actions:[{type:'destroy',target:'b'},{type:'modifyVar',varScope:'global',varName:'score',mode:'add',value:10}]}
+      ],
+      variables:{global:{score:0},scene:{},object:{}}
+    }
+  }
+]
+
+// Create new project
+function createProjectFromTemplate(t){
+  const id = crypto.randomUUID?crypto.randomUUID():String(Date.now())
+  const p = JSON.parse(JSON.stringify(t.seed))
+  p.id = id
+  p.name = t.name + ' - ' + (new Date()).toLocaleString()
+  p.created = Date.now()
+  p.updated = Date.now()
+  const all = read(KEY)
+  all.unshift(p)
+  write(KEY, all)
+  return p
+}
+
+// Expose for pages to use
+window.BotForgeStorage = {
+  KEY, read, write, templates, createProjectFromTemplate,
+  listProjects:()=>read(KEY),
+  saveProject:(proj)=>{
+    const all = read(KEY)
+    const idx = all.findIndex(x=>x.id===proj.id)
+    proj.updated = Date.now()
+    if(idx>=0) { all[idx]=proj } else { all.unshift(proj) }
+    write(KEY, all)
+  },
+  deleteProject:(id)=>{
+    const all = read(KEY).filter(p=>p.id!==id)
+    write(KEY, all)
+  },
+  duplicateProject:(id)=>{
+    const all = read(KEY)
+    const src = all.find(p=>p.id===id)
+    if(!src) return null
+    const copy = JSON.parse(JSON.stringify(src))
+    copy.id = crypto.randomUUID?crypto.randomUUID():String(Date.now())
+    copy.name = src.name + ' (copy)'
+    copy.created = Date.now()
+    copy.updated = Date.now()
+    all.unshift(copy)
+    write(KEY, all)
+    return copy
+  },
+  renameProject:(id,newName)=>{
+    const all=read(KEY)
+    const p=all.find(x=>x.id===id); if(!p) return null; p.name=newName; p.updated=Date.now(); write(KEY,all); return p
+  }
+}
+
+// UI bindings for existing pages
+function renderWorkspace(){
+  const list=document.querySelector('#workspaceProjects'); if(!list) return;
+  const p=read(KEY);
+  list.innerHTML = p.length ? p.map(x=>{
+    const last = x.updated?new Date(x.updated).toLocaleString():'-'
+    return `
+      <div class="project-card">
+        <div class="card-left">
+          <div class="proj-icon">⚡</div>
+        </div>
+        <div class="card-body">
+          <div class="proj-name">${x.name}</div>
+          <div class="proj-meta">${x.scenes?.length||0} scenes • Edited ${last}</div>
+        </div>
+        <div class="card-actions">
+          <a class="btn open" href="../botforge/editor/editor.html?id=${x.id}">OPEN</a>
+          <button class="btn menu" data-id="${x.id}">•••</button>
+        </div>
+      </div>`
+  }).join('\n') : '<div class="empty">No projects yet — create one.</div>';
+
+  // attach menu handlers
+  list.querySelectorAll('.menu').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const id=btn.dataset.id; showProjectMenu(id,btn)
+    })
+  })
+}
+
+function showProjectMenu(id,btn){
+  const menu = document.createElement('div'); menu.className='proj-menu';
+  menu.innerHTML = `
+    <button data-action="open">Open</button>
+    <button data-action="duplicate">Duplicate</button>
+    <button data-action="rename">Rename</button>
+    <button data-action="delete">Delete</button>
+  `
+  document.body.appendChild(menu)
+  const rect = btn.getBoundingClientRect(); menu.style.top = (rect.bottom+4)+'px'; menu.style.left=(rect.left)+'px';
+  menu.addEventListener('click',e=>{
+    const a=e.target.getAttribute('data-action')
+    if(a==='open') window.location.href = `../botforge/editor/editor.html?id=${id}`
+    if(a==='duplicate'){ const c=window.BotForgeStorage.duplicateProject(id); if(c) window.location.href=`../botforge/editor/editor.html?id=${c.id}` }
+    if(a==='rename'){ const nm=prompt('New project name'); if(nm) { window.BotForgeStorage.renameProject(id,nm); renderWorkspace(); }}
+    if(a==='delete'){ if(confirm('Delete project?')){ window.BotForgeStorage.deleteProject(id); renderWorkspace(); }}
+    menu.remove()
+  })
+  const closeFn=()=>{ menu.remove(); document.removeEventListener('click',closeFn)}
+  setTimeout(()=>document.addEventListener('click',closeFn),10)
+}
+
+// Render project library on other pages
+const projectPage=document.querySelector('#projectLibrary'); if(projectPage){
+  const projects=read(KEY);
+  projectPage.innerHTML = projects.length ? projects.map(x=>`<article class="panel"><h3>${x.name}</h3><p>${x.scenes?.length||0} scenes • Edited ${x.updated?new Date(x.updated).toLocaleString():'-'}</p><p><a href="../botforge/editor/editor.html?id=${x.id}">Open</a></p></article>`).join('\n') : '<p>No projects</p>'
+}
+
+// Hook create new game form if present
+const form=document.querySelector('#newGameForm');
+if(form){
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name = document.querySelector('#gameName').value || 'Untitled';
+    const id = crypto.randomUUID?crypto.randomUUID():String(Date.now())
+    const proj = {version:1,id,name,settings:{},scenes:[],objects:[],assets:[],events:[],variables:{global:{score:0},scene:{},object:{}},created:Date.now(),updated:Date.now()}
+    const all=read(KEY); all.unshift(proj); write(KEY,all);
+    window.location.href = `../botforge/editor/editor.html?id=${proj.id}`
+  })
+}
+
+// Init render
+document.addEventListener('DOMContentLoaded',()=>{
+  renderWorkspace()
+})
