@@ -20,14 +20,11 @@ Southeast Studios is a student-run initiative focused on game development, UI/UX
 - Deployed on Netlify (auto-deploy from GitHub)
 
 ## 📁 Project Structure
-index.html # Homepage
-style.css # Main styles
-know-more.html # About / vision
-about-team.html # Team members
-projects.html # Project portfolio
-request.html # Game request form
-email.js # EmailJS integration
-
+- `pages/` — all website and BotForge HTML pages
+- `index.html` — root redirect to `pages/index.html` for the existing site URL
+- `style.css`, `botforge-pages.css`, and `botforge-pages.js` — shared styles and page behavior
+- `google*.html` — verification files kept at the root so their existing verification URLs continue to work
+- `main.js` — Electron entry point, loads `pages/index.html`
 
 ## 👥 Team
 Founded and built by students of Class 9, with a passion for gaming, robotics, and AI.
