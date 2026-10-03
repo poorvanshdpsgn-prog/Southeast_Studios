@@ -36,3 +36,11 @@ For inquiries or collaboration:
 ---
 
 *Built by teens, for the teens.*
+
+## BotForge Game Engine
+
+The authenticated BotForge dashboard now creates and opens editable 2D projects. The editor supports six starter templates, scenes, canvas object editing, image/audio assets, object behaviors, global/scene/object variables, event rules, playable preview, autosave, undo/redo, and JSON import/export.
+
+Project data is stored locally in IndexedDB (with a localStorage fallback) for the current browser origin. Projects are not synchronized to Firebase or shared between browsers. Uploaded assets are limited to 8 MB each in this prototype. Project export is JSON; a standalone playable-game export is not provided yet.
+
+To run the desktop app, install the existing npm dependencies with `npm install`, then launch with `npm start`. The Electron shell serves the site from `http://localhost:4173` so browser modules and Firebase authentication can load correctly. To run the browser version without Electron, use `npm run serve` and open `http://localhost:4173/pages/index.html`. For deployment, use the repository's regular static hosting URL and sign in through the existing Firebase login page.

@@ -1,0 +1,3 @@
+export const BEHAVIORS={platformer:'Platformer Character',topDown:'Top-Down Movement',gravity:'Gravity',physics:'Basic Physics',collision:'Collision',follow:'Follow Object',destroyOnCollision:'Destroy On Collision',health:'Health',enemyMovement:'Enemy Movement'};
+export const OBJECT_TYPES=['Sprite','Rectangle','Circle','Text','Player','Platform','Enemy','Coin','Button'];
+export function behaviorMarkup(object){return Object.entries(BEHAVIORS).map(([key,label])=>`<label class="check-row"><input type="checkbox" data-behavior="${key}" ${object.behaviors?.includes(key)?'checked':''}><span>${label}</span></label>`).join('')}
