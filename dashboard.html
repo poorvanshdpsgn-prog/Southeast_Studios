@@ -653,6 +653,65 @@ body::before {
     outline: 2px solid #00ffff;
     outline-offset: 3px;
 }
+   .nav-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    color: #9fb4b8;
+    text-decoration: none;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.08s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.nav-control:hover {
+    color: #00ffff;
+
+    background: rgba(0,255,255,0.06);
+
+    border-color: rgba(0,255,255,0.35);
+
+    transform: translateX(3px);
+}
+
+.nav-control:active {
+    transform: translateX(3px) translateY(2px);
+
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.nav-control.active {
+    color: #00ffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,255,255,0.13),
+            rgba(0,255,255,0.025)
+        );
+
+    border-color: rgba(0,255,255,0.5);
+
+    box-shadow:
+        inset 3px 0 #00ffff,
+        0 0 15px rgba(0,255,255,0.08);
+}
 </style>
 </head>
 
@@ -672,61 +731,60 @@ body::before {
         <ul>
 
             <li>
-                <a href="#" class="active">
-                    <span class="nav-icon">⌂</span>
-                    Dashboard
-                </a>
-            </li>
+    <a href="dashboard.html" class="nav-control active">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">▣</span>
-                    Projects
-                </a>
-            </li>
+<li>
+    <a href="projects.html" class="nav-control">
+        <span class="nav-icon">▣</span>
+        <span>Projects</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">▧</span>
-                    Gallery
-                </a>
-            </li>
+<li>
+    <a href="gallery.html" class="nav-control">
+        <span class="nav-icon">▧</span>
+        <span>Gallery</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">?</span>
-                    Tutorials
-                </a>
-            </li>
+<li>
+    <a href="tutorials.html" class="nav-control">
+        <span class="nav-icon">?</span>
+        <span>Tutorials</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">◆</span>
-                    Game Templates
-                </a>
-            </li>
+<li>
+    <a href="game-templates.html" class="nav-control">
+        <span class="nav-icon">◆</span>
+        <span>Game Templates</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">⌁</span>
-                    AI Map
-                </a>
-            </li>
+<li>
+    <a href="ai-map.html" class="nav-control">
+        <span class="nav-icon">⌁</span>
+        <span>AI Map</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">◈</span>
-                    BotForge
-                </a>
-            </li>
+<li>
+    <a href="botforge.html" class="nav-control">
+        <span class="nav-icon">◈</span>
+        <span>BotForge</span>
+    </a>
+</li>
 
-            <li>
-                <a href="#">
-                    <span class="nav-icon">✉</span>
-                    Contact Us
-                </a>
-            </li>
-
+<li>
+    <a href="contact.html" class="nav-control">
+        <span class="nav-icon">✉</span>
+        <span>Contact Us</span>
+    </a>
+</li>
         </ul>
 
         <div class="sidebar-footer">
