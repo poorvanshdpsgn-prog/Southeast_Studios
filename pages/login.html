@@ -1,240 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | BotForge</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        /* Extra styles for login page */
-        .auth-container {
-            min-height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-        }
-        .auth-card {
-            background: rgba(10, 10, 20, 0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid #00ffff;
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-        }
-        .auth-card h2 {
-            color: #00ffff;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .auth-card input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            background: #0a0a14;
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-        }
-        .auth-card input:focus {
-            outline: none;
-            border-color: #ff00ff;
-            box-shadow: 0 0 10px #ff00ff;
-        }
-        .auth-card button {
-            width: 100%;
-            padding: 14px;
-            background: #00ffff;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .auth-card button:hover {
-            background: #ff00ff;
-            box-shadow: 0 0 15px #ff00ff;
-        }
-        .auth-footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #aaa;
-        }
-        .auth-footer a {
-            color: #00ffff;
-            text-decoration: none;
-        }
-        .auth-footer a:hover {
-            color: #ff00ff;
-        }
-        .error-message {
-            color: #ff4444;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071116">
+  <title>Sign in or create an account | BotForge</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    :root{color-scheme:dark;--auth-bg:#071116;--auth-panel:#0c1a21;--auth-panel2:#10232b;--auth-line:#24434d;--auth-cyan:#61f2fa;--auth-text:#edf9fb;--auth-muted:#8da5ab;--auth-red:#ff8491;--auth-green:#78e5b4}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--auth-bg);color:var(--auth-text);font-family:Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(#79e5f508 1px,transparent 1px),linear-gradient(90deg,#79e5f508 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,#000 0%,transparent 86%)}
+    body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.11;background:repeating-linear-gradient(0deg,transparent 0 3px,#9ffaff12 4px,transparent 5px)}
+    .auth-nav{height:76px;display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:auto;padding:0 26px;position:relative;z-index:1}.auth-brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--auth-text)}.auth-mark{width:37px;height:37px;display:grid;place-items:center;border:1px solid #4acbd5;border-radius:8px;color:var(--auth-cyan);font-size:15px;font-weight:850;letter-spacing:-1px;background:linear-gradient(145deg,#15323b,#09141a);box-shadow:0 0 18px #4debf21c,inset 0 0 12px #4debf20c}.brand-copy{display:grid;gap:3px}.brand-copy strong{font-size:12px;letter-spacing:2.1px}.brand-copy span{font-size:10px;color:var(--auth-muted);letter-spacing:2px}.nav-signin{color:var(--auth-muted);font-size:13px;text-decoration:none}.nav-signin:hover{color:var(--auth-cyan)}
+    .auth-layout{position:relative;z-index:1;min-height:calc(100vh - 76px);display:grid;place-items:center;padding:38px 20px 50px}.auth-card{width:min(100%,480px);padding:34px 38px 28px;border:1px solid #38717a;border-radius:13px;background:linear-gradient(145deg,#102129f2,#09141bf5 72%);box-shadow:0 28px 100px #0009,0 0 0 1px #70f5ff0a inset,0 0 45px #3be8f20d;backdrop-filter:blur(18px);animation:card-in .48s cubic-bezier(.2,.8,.2,1) both}
+    @keyframes card-in{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .card-head{text-align:center;margin-bottom:26px}.brand-kicker{color:var(--auth-cyan);font:700 10px/1.4 Inter,Arial,sans-serif;letter-spacing:3px}.product-name{margin:8px 0 23px;font-size:13px;letter-spacing:5px;font-weight:800;color:#dffcff}.card-head h1{margin:0;color:var(--auth-text);font-size:23px;letter-spacing:.3px}.card-head p{margin:8px 0 0;color:var(--auth-muted);font-size:13px;line-height:1.5}
+    .auth-form{display:grid;gap:15px}.field{min-width:0}.field label{display:flex;justify-content:space-between;gap:10px;margin-bottom:7px;color:#c5dadd;font-size:12px;font-weight:650}.field-hint{color:#718b92;font-size:10px;font-weight:400}.control-wrap{position:relative}.control-wrap input{display:block;width:100%;height:46px;border:1px solid #294650;border-radius:7px;background:#09161c;color:var(--auth-text);padding:0 13px;font:14px Inter,"Segoe UI",Arial,sans-serif;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}.control-wrap input::placeholder{color:#61777e}.control-wrap input:focus{border-color:var(--auth-cyan);background:#0b1b22;box-shadow:0 0 0 3px #5aeaf21a,0 0 18px #4debf20d}.control-wrap input[aria-invalid="true"]{border-color:var(--auth-red);box-shadow:0 0 0 3px #ff84911a}.password-input{padding-right:68px!important}.reveal{position:absolute;right:8px;top:50%;transform:translateY(-50%);height:31px;padding:0 8px;color:#8db9be;background:transparent;border:1px solid transparent;border-radius:5px;cursor:pointer;font-size:11px}.reveal:hover,.reveal:focus-visible{color:var(--auth-cyan);border-color:#2b626a;outline:0}.strength{margin-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.strength span{height:3px;border-radius:10px;background:#263942;transition:background .2s,box-shadow .2s}.strength[data-score="1"] span:nth-child(-n+1){background:#ff7180}.strength[data-score="2"] span:nth-child(-n+2){background:#f4bf63}.strength[data-score="3"] span:nth-child(-n+3){background:#75dcb6}.strength[data-score="4"] span{background:var(--auth-cyan);box-shadow:0 0 8px #61f2fa55}.strength-caption{display:flex;justify-content:space-between;color:#79929a;font-size:10px;margin-top:5px}.strength-caption b{font-weight:600;color:#a9c2c8}.terms-row{display:flex;gap:10px;align-items:flex-start;color:#a9bec3;font-size:11px;line-height:1.55}.terms-row input{margin:2px 0 0;accent-color:var(--auth-cyan);width:15px;height:15px;flex:0 0 auto}.terms-row a{color:var(--auth-cyan);text-decoration:none}.terms-row a:hover{text-decoration:underline}
+    .feedback{display:none;padding:11px 13px;border:1px solid #884b56;background:#321d24;border-radius:7px;color:#ffd5da;font-size:12px;line-height:1.5}.feedback.show{display:block;animation:feedback-in .2s ease-out}.feedback.success{border-color:#286550;background:#102a24;color:#c4f9e0}.feedback a{color:inherit;font-weight:700;margin-left:4px}.feedback-icon{margin-right:7px}.feedback[role="status"]{aria-live:polite}@keyframes feedback-in{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+    .submit-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:48px;margin-top:3px;border:1px solid #8cffff;border-radius:7px;background:linear-gradient(115deg,#61f2fa,#21b8c5);color:#031316;font-size:12px;font-weight:850;letter-spacing:1.1px;cursor:pointer;box-shadow:0 7px 22px #31d5df1e,inset 0 1px #ffffff70;transition:filter .16s,transform .16s,box-shadow .16s}.submit-btn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 28px #31d5df35}.submit-btn:active:not(:disabled){transform:translateY(1px)}.submit-btn:disabled{opacity:.6;cursor:wait}.submit-btn .arrow{font-size:17px;line-height:10px}.spinner{display:none;width:15px;height:15px;border:2px solid #04161955;border-top-color:#041619;border-radius:50%;animation:spin .7s linear infinite}.submit-btn.loading .spinner{display:inline-block}.submit-btn.loading .arrow{display:none}@keyframes spin{to{transform:rotate(360deg)}}
+    .auth-switch{text-align:center;margin:21px 0 0;color:var(--auth-muted);font-size:12px}.auth-switch a{margin-left:4px;color:var(--auth-cyan);font-weight:700;text-decoration:none}.auth-switch a:hover{text-decoration:underline}.security-note{display:flex;justify-content:center;align-items:center;gap:8px;border-top:1px solid #1c333b;margin-top:23px;padding-top:17px;color:#71868c;font-size:9px;letter-spacing:1.3px}.security-dot{width:5px;height:5px;border-radius:50%;background:var(--auth-green);box-shadow:0 0 8px #78e5b4}
+    .auth-footer{position:relative;z-index:1;padding:0 20px 22px;text-align:center;color:#61767c;font-size:10px}.signup-only[hidden],.login-only[hidden]{display:none!important}
+    @media(max-width:560px){.auth-nav{height:62px;padding:0 18px}.auth-mark{width:32px;height:32px;font-size:13px}.brand-copy strong{font-size:10px}.brand-copy span{font-size:9px}.auth-layout{min-height:calc(100vh - 62px);padding:19px 13px 26px;align-items:start}.auth-card{padding:27px 21px 23px;border-radius:10px}.card-head{margin-bottom:22px}.product-name{margin-bottom:20px}.card-head h1{font-size:21px}.auth-form{gap:13px}.control-wrap input{height:48px;font-size:16px}.auth-footer{padding-bottom:16px}body:before{background-size:34px 34px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-left">
-            <img src="../faah.png" alt="BotForge Logo" class="logo">
+  <header class="auth-nav">
+    <a class="auth-brand" href="index.html" aria-label="Southeast Studios home">
+      <span class="auth-mark" aria-hidden="true">S</span>
+      <span class="brand-copy"><strong>SOUTHEAST STUDIOS</strong><span>CREATOR PLATFORM</span></span>
+    </a>
+    <a class="nav-signin" id="navSignin" href="#">Sign in</a>
+  </header>
+  <main class="auth-layout">
+    <section class="auth-card" aria-labelledby="formTitle">
+      <div class="card-head">
+        <div class="brand-kicker">SOUTHEAST STUDIOS</div>
+        <div class="product-name">BOTFORGE</div>
+        <h1 id="formTitle">Welcome back</h1>
+        <p id="formSubtitle">Sign in to continue building your games.</p>
+      </div>
+      <form id="authForm" class="auth-form" novalidate>
+        <div class="field signup-only" id="nameField" hidden>
+          <label for="displayName">Display name</label>
+          <div class="control-wrap"><input id="displayName" name="name" type="text" autocomplete="name" maxlength="60" placeholder="How should we address you?" disabled></div>
         </div>
-        <div class="hamburger" id="hamburger">☰</div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="know-more.html">Know More</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="about-team.html">About Team</a></li>
-            <li><a href="costumer-support.html">Support</a></li>
-        </ul>
-    </nav>
-
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2 id="formTitle">Login</h2>
-            <div id="errorMsg" class="error-message"></div>
-            <input type="email" id="email" placeholder="Email address" autocomplete="email">
-            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
-            <button id="submitBtn">Login</button>
-            <div class="auth-footer">
-                <span id="toggleText">Don't have an account? </span>
-                <a href="#" id="toggleLink">Sign up</a>
-            </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="control-wrap"><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
         </div>
-    </div>
-
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <h3>BotForge</h3>
-                <p>Build 2D games. No code required.</p>
-            </div>
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="index.html">Home</a>
-                <a href="know-more.html">Know More</a>
-                <a href="projects.html">Projects</a>
-            </div>
-            <div class="footer-contact">
-                <h4>Contact</h4>
-                <p>Email: southeaststudios@gmail.com</p>
-                <p><i>Built by teens, for the teens 🚀</i></p>
-            </div>
+        <div class="field">
+          <label for="password">Password <span class="field-hint signup-only" id="passwordHint" hidden>At least 6 characters</span></label>
+          <div class="control-wrap"><input class="password-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="reveal" type="button" data-target="password" aria-label="Show password" aria-pressed="false">Show</button></div>
+          <div class="signup-only" id="strengthWrap" hidden><div class="strength" id="strengthMeter" data-score="0" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="strength-caption"><span>Password strength</span><b id="strengthLabel">Enter a password</b></div></div>
         </div>
-        <div class="footer-bottom">
-            © 2025 Southeast Studios. All rights reserved.
+        <div class="field signup-only" id="confirmField" hidden>
+          <label for="confirmPassword">Confirm password</label>
+          <div class="control-wrap"><input class="password-input" id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Re-enter your password" disabled><button class="reveal" type="button" data-target="confirmPassword" aria-label="Show confirmation password" aria-pressed="false">Show</button></div>
         </div>
-    </footer>
+        <label class="terms-row signup-only" id="termsRow" for="termsAccepted" hidden><input id="termsAccepted" type="checkbox" disabled><span>I agree to the Southeast Studios Terms and Privacy Policy.</span></label>
+        <div class="feedback" id="feedback" role="alert" aria-live="polite"></div>
+        <button class="submit-btn" id="submitBtn" type="submit"><span id="submitLabel">SIGN IN</span><span class="arrow" aria-hidden="true">→</span><span class="spinner" aria-hidden="true"></span></button>
+      </form>
+      <p class="auth-switch"><span id="toggleText">New to BotForge?</span><a href="#" id="toggleLink">Create an account</a></p>
+      <div class="security-note"><span class="security-dot" aria-hidden="true"></span>SECURE AUTHENTICATION <span aria-hidden="true">•</span> BOTFORGE</div>
+    </section>
+  </main>
+  <footer class="auth-footer">© 2026 Southeast Studios · Built for creators</footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-   <script type="module">
-/* ========== HAMBURGER MENU ========== */
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
+    // Keep this configuration aligned with the existing Southeast Studios Firebase app.
+    const firebaseConfig = {
+      apiKey: "AIzaSyAHLyiX6AvIjEr-hkaBGKg_kEf78Xskd48",
+      authDomain: "southeast-studios.firebaseapp.com",
+      projectId: "southeast-studios",
+      storageBucket: "southeast-studios.firebasestorage.app",
+      messagingSenderId: "977801049293",
+      appId: "1:977801049293:web:911d9d0986a025d113e584",
+      measurementId: "G-6NWDYJ4DJ0"
+    };
+    const auth = getAuth(initializeApp(firebaseConfig));
+    const $ = (id) => document.getElementById(id);
+    const form = $("authForm"), nameInput = $("displayName"), emailInput = $("email"), passwordInput = $("password"), confirmInput = $("confirmPassword");
+    const feedback = $("feedback"), submitBtn = $("submitBtn");
+    let isLogin = true, submitting = false;
 
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
-}
-
-/* ========== FIREBASE IMPORTS ========== */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword 
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-/* ========== FIREBASE CONFIG ========== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAHLyiX6AvIjEr-hkaBGKg_kEf78Xskd48",
-  authDomain: "southeast-studios.firebaseapp.com",
-  projectId: "southeast-studios",
-  storageBucket: "southeast-studios.firebasestorage.app",
-  messagingSenderId: "977801049293",
-  appId: "1:977801049293:web:911d9d0986a025d113e584",
-  measurementId: "G-6NWDYJ4DJ0"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-/* ========== UI ELEMENTS ========== */
-let isLogin = true;
-
-const formTitle = document.getElementById('formTitle');
-const submitBtn = document.getElementById('submitBtn');
-const toggleLink = document.getElementById('toggleLink');
-const toggleText = document.getElementById('toggleText');
-const errorMsg = document.getElementById('errorMsg');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-
-/* ========== FORM SWITCH (LOGIN / SIGNUP) ========== */
-function setFormMode(loginMode) {
-  isLogin = loginMode;
-
-  if (isLogin) {
-    formTitle.innerText = 'Login';
-    submitBtn.innerText = 'Login';
-    toggleText.innerText = "Don't have an account? ";
-    toggleLink.innerText = 'Sign up';
-  } else {
-    formTitle.innerText = 'Sign Up';
-    submitBtn.innerText = 'Sign Up';
-    toggleText.innerText = "Already have an account? ";
-    toggleLink.innerText = 'Login';
-  }
-
-  errorMsg.innerText = '';
-}
-
-/* Toggle login/signup */
-toggleLink.addEventListener('click', (e) => {
-  e.preventDefault();
-  setFormMode(!isLogin);
-});
-
-/* ========== SUBMIT BUTTON ========== */
-submitBtn.addEventListener('click', async () => {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
-
-  if (!email || !password) {
-    errorMsg.innerText = 'Please enter both email and password.';
-    return;
-  }
-
-  errorMsg.innerText = '';
-
-  try {
-    if (isLogin) {
-      // LOGIN
-      await signInWithEmailAndPassword(auth, email, password);
-
-      // redirect to dashboard
-      window.location.href = "dashboard.html";
-
-    } else {
-      // SIGNUP
-      await createUserWithEmailAndPassword(auth, email, password);
-
-      errorMsg.innerText = "Account created! Now login.";
-      setFormMode(true);
-
-      emailInput.value = '';
-      passwordInput.value = '';
+    function clearFeedback(){feedback.className="feedback";feedback.textContent="";[nameInput,emailInput,passwordInput,confirmInput].forEach(input=>input.removeAttribute("aria-invalid"));}
+    function showFeedback(message, kind="error", linkText="", linkHref=""){
+      feedback.className=`feedback show${kind==="success"?" success":""}`;
+      feedback.replaceChildren();
+      const icon=document.createElement("span");icon.className="feedback-icon";icon.textContent=kind==="success"?"✓":"⚠";feedback.append(icon,document.createTextNode(message));
+      if(linkText){const link=document.createElement("a");link.href=linkHref;link.textContent=linkText;link.addEventListener("click",event=>{event.preventDefault();setMode(true);emailInput.focus()});feedback.append(link)}
     }
+    function setMode(loginMode){
+      isLogin=loginMode;clearFeedback();
+      $("termsAccepted").checked=false;
+      $("formTitle").textContent=loginMode?"Welcome back":"Create your account";
+      $("formSubtitle").textContent=loginMode?"Sign in to continue building your games.":"Start building your next great game.";
+      $("submitLabel").textContent=loginMode?"SIGN IN":"CREATE ACCOUNT";
+      $("toggleText").textContent=loginMode?"New to BotForge?":"Already have an account?";
+      $("toggleLink").textContent=loginMode?"Create an account":"Sign in";
+      $("navSignin").textContent=loginMode?"Create account":"Sign in";
+      [$("nameField"),$("confirmField"),$("termsRow"),$("strengthWrap"),$("passwordHint")].forEach(el=>el.hidden=loginMode);
+      [nameInput,confirmInput,$("termsAccepted")].forEach(el=>el.disabled=loginMode);
+      nameInput.required=!loginMode;confirmInput.required=!loginMode;
+      passwordInput.autocomplete=loginMode?"current-password":"new-password";
+      passwordInput.placeholder=loginMode?"Enter your password":"Create a password";
+      document.querySelectorAll(".signup-only").forEach(el=>{if(el=== $("nameField")||el===$("confirmField")||el===$("termsRow")||el===$("strengthWrap")||el===$("passwordHint"))return;el.hidden=loginMode});
+      updateStrength();
+    }
+    function passwordScore(value){
+      if(!value)return 0;
+      let score=0;
+      if(value.length>=6)score++;
+      if(value.length>=10)score++;
+      if(/[A-Za-z]/.test(value)&&/\d/.test(value))score++;
+      if(/[^A-Za-z0-9]/.test(value))score++;
+      return score;
+    }
+    function updateStrength(){
+      const score=passwordScore(passwordInput.value);$("strengthMeter").dataset.score=String(score);
+      const labels=["Enter a password","Weak","Fair","Good","Strong"];
+      $("strengthLabel").textContent=labels[score];
+    }
+    function validate(){
+      clearFeedback();const name=nameInput.value.trim(),email=emailInput.value.trim(),password=passwordInput.value;
+      const fail=(message,input)=>{showFeedback(message);if(input){input.setAttribute("aria-invalid","true");input.focus()}return false};
+      if(!isLogin&&!name)return fail("Enter a display name.",nameInput);
+      if(!email)return fail("Enter your email address.",emailInput);
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return fail("Enter a valid email address.",emailInput);
+      if(!password)return fail("Enter your password.",passwordInput);
+      if(!isLogin&&password.length<6)return fail("Use at least 6 characters for your password.",passwordInput);
+      if(!isLogin&&password!==confirmInput.value)return fail("Your passwords do not match.",confirmInput);
+      if(!isLogin&&!$("termsAccepted").checked)return fail("Please agree to the Terms and Privacy Policy.",$("termsAccepted"));
+      return true;
+    }
+    function friendlyError(error){
+      const code=error?.code||"";
+      const messages={
+        "auth/email-already-in-use":["This email is already registered.","Sign in instead"],
+        "auth/invalid-email":["That email address doesn't look right."],
+        "auth/weak-password":["Choose a stronger password with at least 6 characters."],
+        "auth/user-not-found":["No account was found for this email. Check it or create an account."],
+        "auth/wrong-password":["That password doesn't match this account. Try again."],
+        "auth/invalid-credential":["That email and password combination wasn't recognized. Check your details or create an account."],
+        "auth/too-many-requests":["Too many attempts. Please wait a little and try again."],
+        "auth/network-request-failed":["Connection issue. Check your internet connection and try again."],
+        "auth/operation-not-allowed":["Email and password sign-in is currently unavailable. Contact support."],
+        "auth/account-exists-with-different-credential":["An account already exists with this email. Sign in using its original method."]
+      };
+      return messages[code]||["We couldn't complete that request. Please try again in a moment."];
+    }
+    function setLoading(loading){submitting=loading;submitBtn.disabled=loading;submitBtn.classList.toggle("loading",loading);$("submitLabel").textContent=loading?(isLogin?"SIGNING IN…":"CREATING ACCOUNT…"):(isLogin?"SIGN IN":"CREATE ACCOUNT");}
 
-  } catch (error) {
-    errorMsg.innerText = error.message;
-  }
-});
-</script>
+    $("toggleLink").addEventListener("click",event=>{event.preventDefault();setMode(!isLogin)});
+    $("navSignin").addEventListener("click",event=>{event.preventDefault();setMode(!isLogin)});
+    document.querySelectorAll(".reveal").forEach(button=>button.addEventListener("click",()=>{
+      const input=$(button.dataset.target),revealed=input.type==="password";input.type=revealed?"text":"password";button.textContent=revealed?"Hide":"Show";button.setAttribute("aria-pressed",String(revealed));button.setAttribute("aria-label",`${revealed?"Hide":"Show"} ${input.id==="confirmPassword"?"confirmation password":"password"}`);input.focus({preventScroll:true});
+    }));
+    passwordInput.addEventListener("input",updateStrength);
+    [nameInput,emailInput,passwordInput,confirmInput].forEach(input=>input.addEventListener("input",()=>{if(input.getAttribute("aria-invalid")==="true")input.removeAttribute("aria-invalid")}));
+    form.addEventListener("submit",async event=>{
+      event.preventDefault();if(submitting||!validate())return;
+      setLoading(true);
+      try{
+        const email=emailInput.value.trim(),password=passwordInput.value;
+        if(isLogin){await signInWithEmailAndPassword(auth,email,password)}
+        else{
+          const credential=await createUserWithEmailAndPassword(auth,email,password);
+          const displayName=nameInput.value.trim();
+          if(displayName)await updateProfile(credential.user,{displayName});
+        }
+        showFeedback(isLogin?"Signed in successfully. Opening your workspace…":"Account created successfully. Opening your workspace…","success");
+        window.setTimeout(()=>{window.location.assign("dashboard.html")},450);
+      }catch(error){
+        const [message,action]=friendlyError(error);setLoading(false);showFeedback(message,"error",action,action?"#":"");
+      }
+    });
+  </script>
 </body>
 </html>
