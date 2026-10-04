@@ -19,7 +19,7 @@
     .feedback{display:none;padding:11px 13px;border:1px solid #884b56;background:#321d24;border-radius:7px;color:#ffd5da;font-size:12px;line-height:1.5}.feedback.show{display:block;animation:feedback-in .2s ease-out}.feedback.success{border-color:#286550;background:#102a24;color:#c4f9e0}.feedback a{color:inherit;font-weight:700;margin-left:4px}.feedback-icon{margin-right:7px}.feedback[role="status"]{aria-live:polite}@keyframes feedback-in{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
     .submit-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:48px;margin-top:3px;border:1px solid #8cffff;border-radius:7px;background:linear-gradient(115deg,#61f2fa,#21b8c5);color:#031316;font-size:12px;font-weight:850;letter-spacing:1.1px;cursor:pointer;box-shadow:0 7px 22px #31d5df1e,inset 0 1px #ffffff70;transition:filter .16s,transform .16s,box-shadow .16s}.submit-btn:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 28px #31d5df35}.submit-btn:active:not(:disabled){transform:translateY(1px)}.submit-btn:disabled{opacity:.6;cursor:wait}.submit-btn .arrow{font-size:17px;line-height:10px}.spinner{display:none;width:15px;height:15px;border:2px solid #04161955;border-top-color:#041619;border-radius:50%;animation:spin .7s linear infinite}.submit-btn.loading .spinner{display:inline-block}.submit-btn.loading .arrow{display:none}@keyframes spin{to{transform:rotate(360deg)}}
     .auth-switch{text-align:center;margin:21px 0 0;color:var(--auth-muted);font-size:12px}.auth-switch a{margin-left:4px;color:var(--auth-cyan);font-weight:700;text-decoration:none}.auth-switch a:hover{text-decoration:underline}.security-note{display:flex;justify-content:center;align-items:center;gap:8px;border-top:1px solid #1c333b;margin-top:23px;padding-top:17px;color:#71868c;font-size:9px;letter-spacing:1.3px}.security-dot{width:5px;height:5px;border-radius:50%;background:var(--auth-green);box-shadow:0 0 8px #78e5b4}
-    .auth-footer{position:relative;z-index:1;padding:0 20px 22px;text-align:center;color:#61767c;font-size:10px}.signup-only[hidden],.login-only[hidden]{display:none!important}
+    .auth-footer{position:relative;z-index:1;padding:0 20px 22px;text-align:center;color:#61767c;font-size:10px}.auth-footer a{color:var(--auth-cyan);text-decoration:none}.auth-footer a:hover{text-decoration:underline}.signup-only[hidden],.login-only[hidden]{display:none!important}
     @media(max-width:560px){.auth-nav{height:62px;padding:0 18px}.auth-mark{width:32px;height:32px;font-size:13px}.brand-copy strong{font-size:10px}.brand-copy span{font-size:9px}.auth-layout{min-height:calc(100vh - 62px);padding:19px 13px 26px;align-items:start}.auth-card{padding:27px 21px 23px;border-radius:10px}.card-head{margin-bottom:22px}.product-name{margin-bottom:20px}.card-head h1{font-size:21px}.auth-form{gap:13px}.control-wrap input{height:48px;font-size:16px}.auth-footer{padding-bottom:16px}body:before{background-size:34px 34px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
   </style>
@@ -58,7 +58,7 @@
           <label for="confirmPassword">Confirm password</label>
           <div class="control-wrap"><input class="password-input" id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Re-enter your password" disabled><button class="reveal" type="button" data-target="confirmPassword" aria-label="Show confirmation password" aria-pressed="false">Show</button></div>
         </div>
-        <label class="terms-row signup-only" id="termsRow" for="termsAccepted" hidden><input id="termsAccepted" type="checkbox" disabled><span>I agree to the Southeast Studios Terms and Privacy Policy.</span></label>
+        <label class="terms-row signup-only" id="termsRow" for="termsAccepted" hidden><input id="termsAccepted" type="checkbox" disabled><span>I agree to the <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
         <div class="feedback" id="feedback" role="alert" aria-live="polite"></div>
         <button class="submit-btn" id="submitBtn" type="submit"><span id="submitLabel">SIGN IN</span><span class="arrow" aria-hidden="true">→</span><span class="spinner" aria-hidden="true"></span></button>
       </form>
@@ -66,7 +66,7 @@
       <div class="security-note"><span class="security-dot" aria-hidden="true"></span>SECURE AUTHENTICATION <span aria-hidden="true">•</span> BOTFORGE</div>
     </section>
   </main>
-  <footer class="auth-footer">© 2026 Southeast Studios · Built for creators</footer>
+  <footer class="auth-footer">© 2026 Southeast Studios · Built for creators · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></footer>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -134,7 +134,7 @@
       if(!password)return fail("Enter your password.",passwordInput);
       if(!isLogin&&password.length<6)return fail("Use at least 6 characters for your password.",passwordInput);
       if(!isLogin&&password!==confirmInput.value)return fail("Your passwords do not match.",confirmInput);
-      if(!isLogin&&!$("termsAccepted").checked)return fail("Please agree to the Terms and Privacy Policy.",$("termsAccepted"));
+      if(!isLogin&&!$("termsAccepted").checked)return fail("Please agree to the Terms & Conditions and acknowledge the Privacy Policy.",$("termsAccepted"));
       return true;
     }
     function friendlyError(error){
